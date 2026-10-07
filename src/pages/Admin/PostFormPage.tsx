@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Alert,
   Anchor,
@@ -48,8 +48,13 @@ export function PostFormPage() {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
+  const postsRef = useRef(posts)
+  useEffect(() => {
+    postsRef.current = posts
+  }, [posts])
+
   const form = useForm<CreatePostDTO>({
-    mode: 'controlled',
+    mode: 'uncontrolled',
     initialValues: {
       title: '',
       body: '',
@@ -81,7 +86,7 @@ export function PostFormPage() {
       } catch {
         // A DummyJSON simula o CRUD sem persistir no backend.
         // Se o post foi criado nesta sessão, recuperamos do estado em memória.
-        const localPost = posts.find((p) => p.id === postId)
+        const localPost = postsRef.current.find((p) => p.id === postId)
         if (localPost && isMounted) {
           form.setValues({
             title: localPost.title,
@@ -107,7 +112,10 @@ export function PostFormPage() {
     return () => {
       isMounted = false
     }
-  }, [isEditing, isInvalidId, numericId, posts, form])
+    // form é intencionalmente omitido: o Mantine devolve uma nova referência a cada render,
+    // mas o efeito só deve rodar quando o id da URL muda.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [numericId, isEditing, isInvalidId])
 
   const handleSubmit = async (values: CreatePostDTO) => {
     if (!user) {
