@@ -1,4 +1,5 @@
 import { Badge, Card, Group, Stack, Text, Title } from '@mantine/core'
+import { Link } from 'react-router-dom'
 import type { Post } from '@/schemas/postSchema'
 
 export interface PostCardProps {
@@ -8,11 +9,19 @@ export interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Card
+      component={Link}
+      to={`/posts/${post.id}`}
       shadow="sm"
       padding="lg"
       radius="md"
       withBorder
-      style={{ display: 'flex', flexDirection: 'column' }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        textDecoration: 'none',
+        color: 'inherit',
+        cursor: 'pointer',
+      }}
     >
       <Stack gap="xs" style={{ flex: 1 }}>
         <Group gap="xs">

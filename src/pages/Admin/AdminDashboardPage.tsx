@@ -109,8 +109,8 @@ export function AdminDashboardPage() {
                 <Title order={3} size="h4">
                   Ver perfil
                 </Title>
-                <Badge variant="outline" color="gray">
-                  Em breve
+                <Badge variant="light" color="indigo">
+                  Autor
                 </Badge>
               </Group>
               <Text size="sm" c="dimmed">
@@ -119,12 +119,13 @@ export function AdminDashboardPage() {
             </Stack>
 
             <Button
-              variant="default"
+              component={Link}
+              to="/admin/profile"
+              variant="light"
               fullWidth
               mt="lg"
-              disabled
             >
-              Perfil indisponível
+              Acessar perfil
             </Button>
           </Card>
         </SimpleGrid>
