@@ -1,4 +1,5 @@
 import { Box, Button, Container, Stack, Text, Title } from '@mantine/core'
+import { Link } from 'react-router-dom'
 
 export function CallToAction() {
   return (
@@ -11,7 +12,7 @@ export function CallToAction() {
           <Text c="dimmed" size="md" maw={520}>
             Junte-se à nossa comunidade de leitores e escritores. Crie sua conta para publicar seus próprios artigos e interagir com outros autores.
           </Text>
-          <Button disabled size="lg" radius="md" mt="xs">
+          <Button size="lg" radius="md" mt="xs" component={Link} to="/login">
             Começar
           </Button>
         </Stack>
