@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { MantineProvider } from '@mantine/core'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { theme } from '@/app/theme'
 import '@mantine/core/styles.css'
 
 export interface AppProvidersProps {
@@ -10,7 +11,7 @@ export interface AppProvidersProps {
 
 export function AppProviders({ children }: AppProvidersProps) {
   return (
-    <MantineProvider>
+    <MantineProvider theme={theme}>
       <BrowserRouter>
         <AuthProvider>
           {children}
