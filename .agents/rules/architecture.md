@@ -46,6 +46,7 @@ Pastas são criadas **conforme a necessidade**. Não criar pasta vazia.
 - Não criar arquivos `index.ts` com re-exports a menos que estritamente necessário.
 - Não usar `default export` em lugar nenhum. Sempre `export function` / `export const`. Para páginas, o import é nomeado: `import { HomePage } from '@/pages/Home/HomePage'`.
 - Não instalar dependências sem confirmar antes.
+  Exceção: arquivos em src/test-utils/ podem importar de app/ para reaproveitar configuração de tema e providers. Testes não fazem parte do grafo de dependências de produção.
 
 ## Onde colocar cada arquivo
 
