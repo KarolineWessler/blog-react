@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Alert,
   Anchor,
@@ -8,6 +8,7 @@ import {
   Container,
   Group,
   Loader,
+  Pagination,
   Paper,
   SimpleGrid,
   Stack,
@@ -22,12 +23,24 @@ import { AdminPostCard } from './AdminPostCard'
 import { ConfirmDeleteModal } from './ConfirmDeleteModal'
 import { useAdminPosts } from './useAdminPosts'
 
+const ITEMS_PER_PAGE = 6
+
 export function AdminPostsPage() {
   const { posts, isLoading, error, removePost } = useAdminPosts()
+  const [page, setPage] = useState<number>(1)
   const [postToDelete, setPostToDelete] = useState<Post | null>(null)
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
   const [deleteErrorMessage, setDeleteErrorMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    const totalPages = Math.ceil(posts.length / ITEMS_PER_PAGE)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPage((prevPage) => (prevPage > totalPages ? 1 : prevPage))
+  }, [posts.length])
+
+  const startIndex = (page - 1) * ITEMS_PER_PAGE
+  const paginatedPosts = posts.slice(startIndex, startIndex + ITEMS_PER_PAGE)
 
   const handleOpenDeleteModal = (post: Post) => {
     setDeleteErrorMessage(null)
@@ -136,15 +149,27 @@ export function AdminPostsPage() {
             </Stack>
           </Paper>
         ) : (
-          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
-            {posts.map((post) => (
-              <AdminPostCard
-                key={post.id}
-                post={post}
-                onDelete={handleOpenDeleteModal}
-              />
-            ))}
-          </SimpleGrid>
+          <>
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+              {paginatedPosts.map((post) => (
+                <AdminPostCard
+                  key={post.id}
+                  post={post}
+                  onDelete={handleOpenDeleteModal}
+                />
+              ))}
+            </SimpleGrid>
+
+            {posts.length > ITEMS_PER_PAGE && (
+              <Center mt="md">
+                <Pagination
+                  value={page}
+                  onChange={setPage}
+                  total={Math.ceil(posts.length / ITEMS_PER_PAGE)}
+                />
+              </Center>
+            )}
+          </>
         )}
       </Stack>
 

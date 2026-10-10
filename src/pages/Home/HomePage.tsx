@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Container, SimpleGrid, Stack, Text, Title } from '@mantine/core'
+import { Navigate } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
 import { CallToAction } from './CallToAction'
 import { Hero } from './Hero'
 import { AVAILABLE_TAGS, MOCK_POSTS } from './mockPosts'
@@ -7,7 +9,12 @@ import { PostCard } from './PostCard'
 import { TagFilter } from './TagFilter'
 
 export function HomePage() {
+  const { isAuthenticated } = useAuth()
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
+
+  if (isAuthenticated) {
+    return <Navigate to="/feed" replace />
+  }
 
   const filteredPosts = selectedTag
     ? MOCK_POSTS.filter((post) => post.tags.includes(selectedTag))

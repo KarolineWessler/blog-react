@@ -1,5 +1,5 @@
 import { Box, Button, Container, Group, Text } from '@mantine/core'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink as RouterNavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 
 export function Header() {
@@ -29,18 +29,23 @@ export function Header() {
           <Group gap="sm" align="center">
             {isAuthenticated && user ? (
               <>
+                <RouterNavLink to="/feed" style={{ textDecoration: 'none' }}>
+                  {({ isActive }) => (
+                    <Button variant={isActive ? 'filled' : 'light'} size="sm" radius="md">
+                      Feed
+                    </Button>
+                  )}
+                </RouterNavLink>
                 <Text size="sm" fw={500}>
                   Olá, {user.firstName}!
                 </Text>
-                <Button
-                  component={Link}
-                  to="/admin"
-                  variant="light"
-                  radius="md"
-                  size="sm"
-                >
-                  Painel
-                </Button>
+                <RouterNavLink to="/admin" style={{ textDecoration: 'none' }}>
+                  {({ isActive }) => (
+                    <Button variant={isActive ? 'filled' : 'light'} size="sm" radius="md">
+                      Painel
+                    </Button>
+                  )}
+                </RouterNavLink>
                 <Button
                   onClick={handleLogout}
                   variant="default"
@@ -51,15 +56,17 @@ export function Header() {
                 </Button>
               </>
             ) : (
-              <Button
-                component={Link}
-                to="/login"
-                variant="default"
-                radius="md"
-                size="sm"
-              >
-                Login
-              </Button>
+              <>
+                <Button
+                  component={Link}
+                  to="/login"
+                  variant="default"
+                  radius="md"
+                  size="sm"
+                >
+                  Login
+                </Button>
+              </>
             )}
           </Group>
         </Group>
@@ -67,4 +74,3 @@ export function Header() {
     </Box>
   )
 }
-

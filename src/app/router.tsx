@@ -6,6 +6,7 @@ import { AdminPostsProvider } from '@/pages/Admin/AdminPostsContext'
 import { AdminPostsPage } from '@/pages/Admin/AdminPostsPage'
 import { PostFormPage } from '@/pages/Admin/PostFormPage'
 import { ProfilePage } from '@/pages/Admin/ProfilePage'
+import { FeedPage } from '@/pages/Feed/FeedPage'
 import { HomePage } from '@/pages/Home/HomePage'
 import { LoginPage } from '@/pages/Login/LoginPage'
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage'
@@ -18,6 +19,7 @@ export function AppRouter() {
 
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="feed" element={<FeedPage />} />
         <Route path="posts/:id" element={<PostDetailPage />} />
 
         <Route

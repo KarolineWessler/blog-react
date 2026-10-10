@@ -16,6 +16,7 @@ import {
   Title,
 } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
 import type { Comment } from '@/schemas/commentSchema'
 import type { Post } from '@/schemas/postSchema'
 import { ApiError } from '@/services/api'
@@ -27,7 +28,10 @@ export function PostDetailPage() {
   const { id } = useParams<{ id: string }>()
   const numericId = id ? Number(id) : null
   const isInvalidId = numericId === null || Number.isNaN(numericId)
-
+const { isAuthenticated } = useAuth()
+const backLink = isAuthenticated
+  ? { to: '/feed', label: 'Voltar para o feed' }
+  : { to: '/', label: 'Voltar para a home' }
   const [isLoading, setIsLoading] = useState<boolean>(!isInvalidId)
   const [error, setError] = useState<string | null>(null)
   const [post, setPost] = useState<Post | null>(null)
@@ -82,7 +86,7 @@ export function PostDetailPage() {
             O identificador da publicação informado na URL não é válido.
           </Alert>
           <Button component={Link} to="/" variant="default">
-            Voltar para a home
+            {backLink.label}
           </Button>
         </Paper>
       </Container>
@@ -107,7 +111,7 @@ export function PostDetailPage() {
             {error || 'Não foi possível encontrar a publicação solicitada.'}
           </Alert>
           <Button component={Link} to="/" variant="default">
-            Voltar para a home
+            {backLink.label}
           </Button>
         </Paper>
       </Container>
@@ -119,7 +123,7 @@ export function PostDetailPage() {
       <Stack gap="lg">
         <div>
           <Anchor component={Link} to="/" size="sm" c="dimmed">
-            &larr; Voltar para a home
+            &larr; {backLink.label}
           </Anchor>
         </div>
 
@@ -178,8 +182,8 @@ export function PostDetailPage() {
         </Stack>
 
         <Box mt="md">
-          <Button component={Link} to="/" variant="default">
-            Voltar para a home
+          <Button component={Link} to={backLink.to} variant="default">
+            {backLink.label}
           </Button>
         </Box>
       </Stack>

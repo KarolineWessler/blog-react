@@ -6,6 +6,30 @@ import {
 } from '@/schemas/postSchema'
 import { api, ApiError } from '@/services/api'
 
+export interface FetchPostsParams {
+  skip: number
+  limit: number
+}
+
+export interface FetchPostsResult {
+  posts: Post[]
+  total: number
+  skip: number
+  limit: number
+}
+
+export async function fetchPosts({ skip, limit }: FetchPostsParams): Promise<FetchPostsResult> {
+  const response = await api.get(`/posts?limit=${limit}&skip=${skip}`)
+
+  const parsed = PostsPaginatedResponseSchema.safeParse(response.data)
+
+  if (!parsed.success) {
+    throw new ApiError(500, 'Formato de dados inválido retornado pelo servidor.')
+  }
+
+  return parsed.data
+}
+
 export async function fetchPost(postId: number): Promise<Post> {
   const response = await api.get(`/posts/${postId}`)
 
