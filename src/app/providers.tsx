@@ -12,7 +12,7 @@ export interface AppProvidersProps {
 export function AppProviders({ children }: AppProvidersProps) {
   return (
     <MantineProvider theme={theme}>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <AuthProvider>
           {children}
         </AuthProvider>
